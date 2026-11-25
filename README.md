@@ -1,28 +1,31 @@
-# Zimflix — pre-launch waitlist
+# Zimflix — Pre-launch website
 
-A lightweight, static landing page for the Zimflix pre-launch announcement and waitlist. The site is intentionally separate from the future streaming platform.
+Zimflix is a Zimbabwe-first digital home for entertainment, music, learning and creators.
 
-## What is included
-- Responsive, investor-friendly pre-launch landing page
-- Approved Zimflix Zimbabwe Bird striped playmark (gold bird) in the header and hero
-- Automatic light/dark theme detection using the visitor's browser preference
-- Manual theme toggle, stored locally
-- Motion and section-reveal effects with reduced-motion support
-- Supabase-backed email waitlist form and duplicate detection
-- Supabase migration and the waitlist confirmation Edge Function source
+This repository contains the lightweight pre-launch waiting-list website. It is intentionally static so it can be deployed directly to Vercel without a Node.js server runtime.
 
-## Hosting
-This repository is connected to Vercel. It is a static website: the root `index.html` is served directly and does not require a Node.js server or a build command.
+## Features
+
+- Responsive investor / early-adopter landing page
+- Automatic browser light/dark preference with a manual override
+- Zimflix green, lime and Zimbabwe-flag accent system
+- Approved Zimflix gold Zimbabwe Bird playmark and light/dark wordmarks
+- Supabase-backed email waitlist with duplicate detection and user feedback
+
+## Deploy
+
+The site is a static HTML deployment. Connect this repository to the existing Vercel project named `zimflix`, use the repository root as the root directory, set Framework Preset to **Other**, and leave the build command empty.
 
 ## Waitlist backend
-The form submits directly to Supabase REST API using the public publishable key and the `public.waitlist_signups` table. The table grants anonymous visitors insert-only access under Row Level Security. Public visitors cannot read the list.
 
-Supabase project: `vqsulwwcrirxbymdhdul`
+The signup form submits to `public.waitlist_signups` in the connected Supabase project using the public publishable key and insert-only Row Level Security policy. No service-role key is exposed in the browser.
 
-## Confirmation emails
-The Edge Function source is in `supabase/functions/waitlist-confirmation/index.ts`. It is deployed to Supabase, but email sending is not active until a verified sender domain, `RESEND_API_KEY`, `WAITLIST_FROM_EMAIL`, `SITE_URL`, and a database INSERT webhook are configured.
+See `supabase/migrations/202611190001_create_waitlist.sql` for the schema and RLS policy.
 
-The site therefore confirms successful waitlist registration in the browser, but does not claim that a confirmation email has been sent.
+## Email confirmation
+
+The Supabase Edge Function in `supabase/functions/waitlist-confirmation/index.ts` is deployed, but email delivery requires a verified sender domain, a Resend API key, function secrets, and a database webhook. Do not display a confirmation-email success message until delivery is configured.
 
 ## Scope
-This is a pre-launch marketing and waitlist site, not the production streaming application. The future app, creator studio, education system, advertising network, gifts, marketplace and admin console are not part of this release.
+
+This is a pre-launch marketing and waitlist website, not the production streaming application. Admin functions, investor analytics, creator uploads, streaming, marketplace and monetisation are not part of this site.
